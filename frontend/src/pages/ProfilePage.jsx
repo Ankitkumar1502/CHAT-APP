@@ -1,15 +1,30 @@
 import React from 'react'
+import { useState } from "react";
 import { useAuthStore } from '../store/useAuthStore'
 import { Camera , Mail, User} from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
 
 const {authUser, isUpdatingProfile, updateProfile } = useAuthStore();
+const [selectedImg, setSelectedImg] = useState(null);
 const handleImageUpload = async (e) => {
-  
+  const file = e.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+
+  reader.readAsDataURL(file) //converts file into a base64-encoded string , a text representation of the image.
+
+  reader.onload = async () => {
+    const base64Image = reader.result;
+    setSelectedImg(base64Image);
+    // await updateProfile({ profilePic: base64Image })
+    toast.success('Profile updated successfully');//frontendPart
+  }
 }
   return (
-    <div className='h-screen pt-20'>
+    <div className='h-screen pt-10'>
       <div className='max-w-2xl mx-auto p-4 py-8'>
         <div className='bg-base-300 rounded-xl p-6 space-y-8'>
           <div className='text-center'>
@@ -22,8 +37,8 @@ const handleImageUpload = async (e) => {
           <div className='flex flex-col items-center gap-4'>
             <div className='relative'>
               <img 
-              // src={authUser.profilePic || "/avatar.png"} 
-              src={ "/avatar.png"} 
+              src={ selectedImg ||  "/avatar.png"} 
+              // src={ "/avatar.png"} 
               alt="Profile"
               className='size-32 rounded-full object-cover border-4' 
               />

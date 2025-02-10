@@ -9,6 +9,7 @@ import ProfilePage from './pages/ProfilePage'
 import { useAuthStore } from './store/useAuthStore'
 import {Loader} from "lucide-react"
 import {Toaster} from "react-hot-toast"
+import { useThemeStore } from './store/useThemeStore'
 
 const App = () => {
   // const{authUser , checkAuth , isCheckingAuth}= useAuthStore()
@@ -23,9 +24,9 @@ const App = () => {
   //       <Loader className='size-9 animate-spin'/> 
   //   </div>
   // )
-  
+  const { theme } = useThemeStore()
   return (
-    <div className="h-screen flex flex-col ">
+    <div data-theme={theme}>
      <Navbar />
      <div className="flex-1 overflow-auto pt-10">
       <Routes>
